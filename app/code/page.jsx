@@ -233,6 +233,7 @@ export default function HomePage() {
                         <textarea
                             className="w-full h-full bg-transparent outline-none text-white resize-none"
                             placeholder="Fix logical bugs to get correct output"
+                            disabled
                             value={output}
                         />
                     </div>
