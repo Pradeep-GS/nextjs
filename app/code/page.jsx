@@ -136,7 +136,6 @@ export default function HomePage() {
         }, 1000)
         return () => clearInterval(timer)
     }, [])
-
     const minutes = Math.floor(timeLeft / 60)
     const seconds = timeLeft % 60
 
@@ -163,7 +162,7 @@ export default function HomePage() {
             const data = await res.json()
 
             if (data.stderr) {
-                setOutput(data.stderr)
+                setOutput("No Error Fixed")
             } else {
                 setOutput(data.stdout || 'No output')
             }
@@ -221,8 +220,8 @@ export default function HomePage() {
                             onClick={handleRun}
                             disabled={isRunning}
                             className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${isRunning
-                                    ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
-                                    : 'bg-green-600 hover:bg-green-500 text-white'
+                                ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
+                                : 'bg-green-600 hover:bg-green-500 text-white'
                                 }`}
                         >
                             {isRunning ? 'Running...' : 'Run Code'}
