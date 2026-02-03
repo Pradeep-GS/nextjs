@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import MonacoEditor from '@monaco-editor/react'
 import { Clock } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 const buggyPrograms = {
     python: `
@@ -117,9 +118,10 @@ int main() {
 }
 
 export default function HomePage() {
+    const router = useRouter()
     const [selectedLang, setSelectedLang] = useState('python')
     const [code, setCode] = useState(buggyPrograms.python)
-    const [timeLeft, setTimeLeft] = useState(60 * 60)
+    const [timeLeft, setTimeLeft] = useState(1 * 60)
     const [output, setOutput] = useState('')
     const [isRunning, setIsRunning] = useState(false)
 
@@ -131,11 +133,15 @@ export default function HomePage() {
     ]
 
     useEffect(() => {
+        if (timeLeft === 0) {
+            router.push('/')
+            return
+        }
         const timer = setInterval(() => {
             setTimeLeft((t) => (t > 0 ? t - 1 : 0))
         }, 1000)
         return () => clearInterval(timer)
-    }, [])
+    }, [timeLeft, router])
     const minutes = Math.floor(timeLeft / 60)
     const seconds = timeLeft % 60
 
