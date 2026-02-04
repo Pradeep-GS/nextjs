@@ -3,9 +3,11 @@
 
 import { useEffect, useState } from "react"
 import { motion } from 'framer-motion'
-import { Loader2 } from 'lucide-react'
+import { Loader2, Trophy, XCircle, ChevronRight, Home, RefreshCw } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 export default function QuestionsPage() {
+    const router = useRouter()
     const [questions, setQuestions] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
@@ -13,7 +15,7 @@ export default function QuestionsPage() {
     const [selectedOption, setSelectedOption] = useState(null)
     const [score, setScore] = useState(0)
     const [showResult, setShowResult] = useState(false)
-    const [timeLeft, setTimeLeft] = useState(1800) 
+    const [timeLeft, setTimeLeft] = useState(1800)
 
     useEffect(() => {
         const fetchQuestions = async () => {
@@ -143,43 +145,76 @@ export default function QuestionsPage() {
     }
 
     if (showResult) {
+        const isPassed = score >= 20
+
         return (
-            <div className="min-h-screen bg-gradient-to-br from-gray-950 to-gray-900 p-6">
-                <div className="max-w-4xl mx-auto">
+            <div className="min-h-screen bg-gradient-to-br from-gray-950 to-gray-900 p-6 flex items-center justify-center">
+                <div className="max-w-2xl w-full">
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="bg-gray-900/50 backdrop-blur-sm rounded-xl border border-gray-700/50 p-8"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-700/50 p-8 shadow-2xl"
                     >
-                        <h1 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-                            Quiz Results
-                        </h1>
-
                         <div className="text-center mb-8">
-                            <div className="inline-block p-8 rounded-full bg-gradient-to-br from-cyan-900/30 to-blue-900/30 border border-cyan-700/30">
-                                <div className="text-5xl font-bold text-white mb-2">{score}/{questions.length}</div>
-                                <div className="text-gray-400">Score</div>
+                            {isPassed ? (
+                                <div className="inline-block p-4 rounded-full bg-green-500/10 mb-4">
+                                    <Trophy className="w-16 h-16 text-green-500" />
+                                </div>
+                            ) : (
+                                <div className="inline-block p-4 rounded-full bg-red-500/10 mb-4">
+                                    <XCircle className="w-16 h-16 text-red-500" />
+                                </div>
+                            )}
+
+                            <h1 className="text-3xl font-bold mb-2 text-white">
+                                {isPassed ? "Qualification Successful!" : "Assessment Incomplete"}
+                            </h1>
+                            <p className="text-gray-400">
+                                {isPassed
+                                    ? "Excellent work! You've qualified for the next stage."
+                                    : "Unfortunately, you didn't reach the required score of 20 to proceed."}
+                            </p>
+                        </div>
+
+                        <div className="flex justify-center gap-8 mb-10">
+                            <div className="text-center">
+                                <div className="text-5xl font-bold text-white mb-1">{score}</div>
+                                <div className="text-gray-500 uppercase text-xs tracking-widest">Your Score</div>
+                            </div>
+                            <div className="w-px bg-gray-800 self-stretch"></div>
+                            <div className="text-center">
+                                <div className="text-5xl font-bold text-gray-500 mb-1">20</div>
+                                <div className="text-gray-500 uppercase text-xs tracking-widest">Passing Score</div>
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                            <div className="p-4 rounded-lg bg-green-900/10 border border-green-700/20">
-                                <div className="text-2xl font-bold text-green-400 mb-1">{score}</div>
-                                <div className="text-gray-400">Correct Answers</div>
-                            </div>
-                            <div className="p-4 rounded-lg bg-red-900/10 border border-red-700/20">
-                                <div className="text-2xl font-bold text-red-400 mb-1">{questions.length - score}</div>
-                                <div className="text-gray-400">Incorrect Answers</div>
-                            </div>
-                        </div>
-
-                        <div className="text-center">
-                            <button
-                                onClick={resetQuiz}
-                                className="px-8 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 rounded-lg font-semibold text-lg transition-all hover:scale-105 active:scale-95 shadow-lg shadow-cyan-900/30"
-                            >
-                                Try Again
-                            </button>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {isPassed ? (
+                                <button
+                                    onClick={() => router.push('/code')}
+                                    className="col-span-1 md:col-span-2 flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 rounded-xl font-bold text-lg text-white transition-all hover:scale-[1.02] shadow-lg shadow-cyan-900/30"
+                                >
+                                    Proceed to Coding Challenge
+                                    <ChevronRight className="w-6 h-6" />
+                                </button>
+                            ) : (
+                                <>
+                                    <button
+                                        onClick={resetQuiz}
+                                        className="flex items-center justify-center gap-2 px-6 py-4 bg-gray-800 hover:bg-gray-700 rounded-xl font-semibold text-gray-200 transition-all border border-gray-700"
+                                    >
+                                        <RefreshCw className="w-5 h-5" />
+                                        Try Again
+                                    </button>
+                                    <button
+                                        onClick={() => router.push('/')}
+                                        className="flex items-center justify-center gap-2 px-6 py-4 bg-gray-900 hover:bg-gray-800 rounded-xl font-semibold text-gray-300 transition-all border border-gray-800"
+                                    >
+                                        <Home className="w-5 h-5" />
+                                        Back to Home
+                                    </button>
+                                </>
+                            )}
                         </div>
                     </motion.div>
                 </div>
@@ -209,7 +244,6 @@ export default function QuestionsPage() {
                 <div className="mb-8">
                     <div className="flex justify-between text-gray-400 text-sm mb-2">
                         <span>Question {currentQuestion + 1} of {questions.length}</span>
-                        <span>Score: {score}</span>
                     </div>
                     <div className="w-full h-2 bg-gray-800 rounded-full overflow-hidden">
                         <motion.div
@@ -240,14 +274,14 @@ export default function QuestionsPage() {
                                 key={option}
                                 onClick={() => handleOptionSelect(option)}
                                 className={`w-full p-4 text-left rounded-xl border-2 transition-all duration-300 ${selectedOption === option
-                                        ? 'bg-blue-900/20 border-blue-500 text-blue-100 shadow-lg shadow-blue-900/20'
-                                        : 'bg-gray-800/30 border-gray-700/50 hover:border-gray-600 hover:bg-gray-700/30'
+                                    ? 'bg-blue-900/20 border-blue-500 text-blue-100 shadow-lg shadow-blue-900/20'
+                                    : 'bg-gray-800/30 border-gray-700/50 hover:border-gray-600 hover:bg-gray-700/30'
                                     }`}
                             >
                                 <div className="flex items-center gap-4">
                                     <div className={`w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg ${selectedOption === option
-                                            ? 'bg-blue-600 text-white'
-                                            : 'bg-gray-700/50 text-gray-400'
+                                        ? 'bg-blue-600 text-white'
+                                        : 'bg-gray-700/50 text-gray-400'
                                         }`}>
                                         {option}
                                     </div>
@@ -263,8 +297,8 @@ export default function QuestionsPage() {
                         onClick={handlePrevious}
                         disabled={currentQuestion === 0}
                         className={`px-6 py-3 rounded-lg font-medium transition-all ${currentQuestion === 0
-                                ? 'bg-gray-800/30 text-gray-500 cursor-not-allowed'
-                                : 'bg-gray-800/50 hover:bg-gray-700/50 text-gray-300'
+                            ? 'bg-gray-800/30 text-gray-500 cursor-not-allowed'
+                            : 'bg-gray-800/50 hover:bg-gray-700/50 text-gray-300'
                             }`}
                     >
                         Previous
@@ -274,15 +308,15 @@ export default function QuestionsPage() {
                         onClick={handleNext}
                         disabled={!selectedOption}
                         className={`px-8 py-3 rounded-lg font-semibold text-lg transition-all ${!selectedOption
-                                ? 'bg-gray-800/30 text-gray-500 cursor-not-allowed'
-                                : 'bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 hover:scale-105 active:scale-95 shadow-lg shadow-cyan-900/30'
+                            ? 'bg-gray-800/30 text-gray-500 cursor-not-allowed'
+                            : 'bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 hover:scale-105 active:scale-95 shadow-lg shadow-cyan-900/30'
                             }`}
                     >
                         {currentQuestion === questions.length - 1 ? 'Finish' : 'Next'}
                     </button>
                 </div>
 
-                
+
                 <div className="mt-8 flex flex-wrap gap-2 justify-center text-white">
                     {questions.map((_, index) => (
                         <button
@@ -292,10 +326,10 @@ export default function QuestionsPage() {
                                 setSelectedOption(null)
                             }}
                             className={`w-10 h-10 rounded-lg flex items-center justify-center font-medium transition-all ${index === currentQuestion
-                                    ? 'bg-gradient-to-br from-cyan-600 to-blue-600 text-white shadow-lg'
-                                    : index < currentQuestion
-                                        ? 'bg-green-900/30 text-green-300 border border-green-700/30'
-                                        : 'bg-gray-800/50 text-gray-400 border border-gray-700/50'
+                                ? 'bg-gradient-to-br from-cyan-600 to-blue-600 text-white shadow-lg'
+                                : index < currentQuestion
+                                    ? 'bg-green-900/30 text-green-300 border border-green-700/30'
+                                    : 'bg-gray-800/50 text-gray-400 border border-gray-700/50'
                                 }`}
                         >
                             {index + 1}
