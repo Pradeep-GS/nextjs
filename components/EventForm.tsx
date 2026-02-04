@@ -18,6 +18,12 @@ const EventForm = () => {
       body: JSON.stringify(form)
     })
     const data = await res.json()
+    if(data){
+      router.push('/mcq')
+    }
+    else{
+      alert(data.message)
+    }
   }
   return (
     <div className="w-full min-h-screen bg-gray-950 overflow-y-auto">
