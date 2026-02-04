@@ -102,13 +102,6 @@ export default function QuestionsPage() {
         }
     }
 
-    const resetQuiz = () => {
-        setCurrentQuestion(0)
-        setSelectedOption(null)
-        setScore(0)
-        setShowResult(false)
-        setTimeLeft(1800)
-    }
 
     if (loading) {
         return (
@@ -199,13 +192,6 @@ export default function QuestionsPage() {
                                 </button>
                             ) : (
                                 <>
-                                    <button
-                                        onClick={resetQuiz}
-                                        className="flex items-center justify-center gap-2 px-6 py-4 bg-gray-800 hover:bg-gray-700 rounded-xl font-semibold text-gray-200 transition-all border border-gray-700"
-                                    >
-                                        <RefreshCw className="w-5 h-5" />
-                                        Try Again
-                                    </button>
                                     <button
                                         onClick={() => router.push('/')}
                                         className="flex items-center justify-center gap-2 px-6 py-4 bg-gray-900 hover:bg-gray-800 rounded-xl font-semibold text-gray-300 transition-all border border-gray-800"
