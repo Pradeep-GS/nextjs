@@ -18,7 +18,7 @@ const EventForm = () => {
       body: JSON.stringify(form)
     })
     const data = await res.json()
-    if(data){
+    if(res.ok){
       router.push('/mcq')
     }
     else{
