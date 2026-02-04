@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from "react"
 import { motion } from 'framer-motion'
-import { Loader2, Trophy, XCircle, ChevronRight, Home, RefreshCw } from 'lucide-react'
+import { Loader2, Trophy, XCircle, ChevronRight, Home } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 export default function QuestionsPage() {
@@ -12,8 +12,7 @@ export default function QuestionsPage() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [currentQuestion, setCurrentQuestion] = useState(0)
-    const [selectedOption, setSelectedOption] = useState(null)
-    const [score, setScore] = useState(0)
+    const [answers, setAnswers] = useState({})
     const [showResult, setShowResult] = useState(false)
     const [timeLeft, setTimeLeft] = useState(1800)
 
@@ -77,17 +76,13 @@ export default function QuestionsPage() {
     }
 
     const handleOptionSelect = (option) => {
-        setSelectedOption(option)
+        setAnswers(prev => ({
+            ...prev,
+            [questions[currentQuestion].id]: option
+        }))
     }
 
     const handleNext = () => {
-        // Check if answer is correct
-        if (selectedOption === questions[currentQuestion].correct_option) {
-            setScore(score + 1)
-        }
-
-        setSelectedOption(null)
-
         if (currentQuestion < questions.length - 1) {
             setCurrentQuestion(currentQuestion + 1)
         } else {
@@ -98,7 +93,6 @@ export default function QuestionsPage() {
     const handlePrevious = () => {
         if (currentQuestion > 0) {
             setCurrentQuestion(currentQuestion - 1)
-            setSelectedOption(null)
         }
     }
 
@@ -138,7 +132,11 @@ export default function QuestionsPage() {
     }
 
     if (showResult) {
-        const isPassed = score >= 20
+        const calculatedScore = questions.reduce((acc, q) => {
+            return acc + (answers[q.id] === q.correct_option ? 1 : 0)
+        }, 0)
+
+        const isPassed = calculatedScore >= 20
 
         return (
             <div className="min-h-screen bg-gradient-to-br from-gray-950 to-gray-900 p-6 flex items-center justify-center">
@@ -171,7 +169,7 @@ export default function QuestionsPage() {
 
                         <div className="flex justify-center gap-8 mb-10">
                             <div className="text-center">
-                                <div className="text-5xl font-bold text-white mb-1">{score}</div>
+                                <div className="text-5xl font-bold text-white mb-1">{calculatedScore}</div>
                                 <div className="text-gray-500 uppercase text-xs tracking-widest">Your Score</div>
                             </div>
                             <div className="w-px bg-gray-800 self-stretch"></div>
@@ -259,13 +257,13 @@ export default function QuestionsPage() {
                             <button
                                 key={option}
                                 onClick={() => handleOptionSelect(option)}
-                                className={`w-full p-4 text-left rounded-xl border-2 transition-all duration-300 ${selectedOption === option
+                                className={`w-full p-4 text-left rounded-xl border-2 transition-all duration-300 ${answers[currentQ.id] === option
                                     ? 'bg-blue-900/20 border-blue-500 text-blue-100 shadow-lg shadow-blue-900/20'
                                     : 'bg-gray-800/30 border-gray-700/50 hover:border-gray-600 hover:bg-gray-700/30'
                                     }`}
                             >
                                 <div className="flex items-center gap-4">
-                                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg ${selectedOption === option
+                                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg ${answers[currentQ.id] === option
                                         ? 'bg-blue-600 text-white'
                                         : 'bg-gray-700/50 text-gray-400'
                                         }`}>
@@ -292,8 +290,8 @@ export default function QuestionsPage() {
 
                     <button
                         onClick={handleNext}
-                        disabled={!selectedOption}
-                        className={`px-8 py-3 rounded-lg font-semibold text-lg transition-all ${!selectedOption
+                        disabled={!answers[currentQ.id]}
+                        className={`px-8 py-3 rounded-lg font-semibold text-lg transition-all ${!answers[currentQ.id]
                             ? 'bg-gray-800/30 text-gray-500 cursor-not-allowed'
                             : 'bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 hover:scale-105 active:scale-95 shadow-lg shadow-cyan-900/30'
                             }`}
@@ -309,11 +307,10 @@ export default function QuestionsPage() {
                             key={index}
                             onClick={() => {
                                 setCurrentQuestion(index)
-                                setSelectedOption(null)
                             }}
                             className={`w-10 h-10 rounded-lg flex items-center justify-center font-medium transition-all ${index === currentQuestion
                                 ? 'bg-gradient-to-br from-cyan-600 to-blue-600 text-white shadow-lg'
-                                : index < currentQuestion
+                                : answers[questions[index].id]
                                     ? 'bg-green-900/30 text-green-300 border border-green-700/30'
                                     : 'bg-gray-800/50 text-gray-400 border border-gray-700/50'
                                 }`}
