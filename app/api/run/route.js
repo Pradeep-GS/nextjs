@@ -11,8 +11,6 @@ export async function POST(req) {
         c: 'c',
         cpp: 'cpp'
     }
-
-    // Create runner
     const createRes = await fetch('https://api.paiza.io/runners/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

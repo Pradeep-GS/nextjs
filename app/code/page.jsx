@@ -121,7 +121,7 @@ export default function HomePage() {
     const router = useRouter()
     const [selectedLang, setSelectedLang] = useState('python')
     const [code, setCode] = useState(buggyPrograms.python)
-    const [timeLeft, setTimeLeft] = useState(1 * 60)
+    const [timeLeft, setTimeLeft] = useState(30* 60)
     const [output, setOutput] = useState('')
     const [isRunning, setIsRunning] = useState(false)
 
