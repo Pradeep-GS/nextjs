@@ -2,10 +2,23 @@
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { ArrowRight, Cpu, Cctv, CircuitBoard } from 'lucide-react';
+import { useState } from 'react';
 
 const EventForm = () => {
   const router = useRouter();
+  const [form, setForm] = useState({ name: '', email: '', year: '', department: '', college: '', phone: '' })
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => setForm({ ...form, [e.target.name]: e.target.value })
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const res = await fetch('/api/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(form)
+    })
+    const data = await res.json()
+  }
   return (
     <div className="w-full min-h-screen bg-gray-950 overflow-y-auto">
       <div className="absolute inset-0">
@@ -28,10 +41,10 @@ const EventForm = () => {
         <div className="absolute bottom-1/4 right-1/3 w-40 h-40 rounded-full bg-blue-500/5 blur-3xl"></div>
       </div>
 
-      <motion.div 
-        initial={{ opacity: 0, y: -20 }} 
-        animate={{ opacity: 1, y: 0 }} 
-        transition={{ duration: 0.8 }} 
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
         className="relative z-10 py-6"
       >
         <div className="w-full max-w-4xl mx-auto px-4">
@@ -49,7 +62,7 @@ const EventForm = () => {
                   <div className="text-center">
                     <h1 className="text-2xl md:text-3xl font-bold">
                       <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
-                        VSB ENGINEERING COLLEGE 
+                        VSB ENGINEERING COLLEGE
                       </span>
                     </h1>
                     <div className="mt-1 text-center">
@@ -70,19 +83,21 @@ const EventForm = () => {
 
                 {/* Right Pattern Image */}
                 <div className="relative rounded-xl overflow-hidden w-28 h-28 md:w-36 md:h-36 border border-cyan-700/30">
-                  <img src="/Kanal-Photoroom.png" alt="AI Pattern" className="w-full h-full object-cover"/>
+                  <img src="/Kanal-Photoroom.png" alt="AI Pattern" className="w-full h-full object-cover" />
                 </div>
               </div>
             </div>
 
             <div className="p-6 md:p-8">
-              <form  className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="group">
                     <label htmlFor="name" className="block text-lg font-medium text-cyan-300 mb-2 group-focus-within:text-cyan-200 transition-colors">
                       Name *
                     </label>
-                    <input  type="text"  placeholder="Enter your name"  name='name'  id='name'  autoComplete='off' required className="w-full px-4 py-3 rounded-xl bg-gray-900/70 border border-gray-700/50 text-white placeholder-gray-500 backdrop-blur-sm focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20  hover:border-gray-600 transition-all duration-300"
+                    <input type="text" placeholder="Enter your name" name='name' id='name' autoComplete='off' required className="w-full px-4 py-3 rounded-xl bg-gray-900/70 border border-gray-700/50 text-white placeholder-gray-500 backdrop-blur-sm focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20  hover:border-gray-600 transition-all duration-300"
+                      value={form.name}
+                      onChange={handleChange}
                     />
                   </div>
 
@@ -91,16 +106,18 @@ const EventForm = () => {
                     <label htmlFor="email" className="block text-lg font-medium text-cyan-300 mb-2 group-focus-within:text-cyan-200 transition-colors">
                       Email *
                     </label>
-                    <input 
-                      type="email" 
-                      placeholder="Enter your email" 
-                      name='email' 
-                      id='email' 
+                    <input
+                      type="email"
+                      placeholder="Enter your email"
+                      name='email'
+                      id='email'
                       autoComplete='off'
                       required
                       className="w-full px-4 py-3 rounded-xl bg-gray-900/70 border border-gray-700/50 text-white placeholder-gray-500 backdrop-blur-sm
                                  focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 
                                  hover:border-gray-600 transition-all duration-300"
+                      value={form.email}
+                      onChange={handleChange}
                     />
                   </div>
 
@@ -109,13 +126,15 @@ const EventForm = () => {
                     <label htmlFor="year" className="block text-lg font-medium text-cyan-300 mb-2 group-focus-within:text-cyan-200 transition-colors">
                       Year *
                     </label>
-                    <select 
-                      name='year' 
-                      id='year' 
+                    <select
+                      name='year'
+                      id='year'
                       required
                       className="w-full px-4 py-3 rounded-xl bg-gray-900/70 border border-gray-700/50 text-white backdrop-blur-sm
                                  focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 
                                  hover:border-gray-600 transition-all duration-300"
+                      value={form.year}
+                      onChange={handleChange}
                     >
                       <option value="">Select Year</option>
                       <option value="1">First Year</option>
@@ -130,7 +149,9 @@ const EventForm = () => {
                     <label htmlFor="department" className="block text-lg font-medium text-cyan-300 mb-2 group-focus-within:text-cyan-200 transition-colors">
                       Department *
                     </label>
-                    <input  type="text"  placeholder="Enter your department"  name='department'  id='department'  autoComplete='off' required className="w-full px-4 py-3 rounded-xl bg-gray-900/70 border border-gray-700/50 text-white placeholder-gray-500 backdrop-blur-sm focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20  hover:border-gray-600 transition-all duration-300"
+                    <input type="text" placeholder="Enter your department" name='department' id='department' autoComplete='off' required className="w-full px-4 py-3 rounded-xl bg-gray-900/70 border border-gray-700/50 text-white placeholder-gray-500 backdrop-blur-sm focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20  hover:border-gray-600 transition-all duration-300"
+                      value={form.department}
+                      onChange={handleChange}
                     />
                   </div>
 
@@ -139,7 +160,10 @@ const EventForm = () => {
                     <label htmlFor="college" className="block text-lg font-medium text-cyan-300 mb-2 group-focus-within:text-cyan-200 transition-colors">
                       College *
                     </label>
-                    <input  type="text"  placeholder="Enter your college"  name='college'  id='college'  autoComplete='off' required className="w-full px-4 py-3 rounded-xl bg-gray-900/70 border border-gray-700/50 text-white placeholder-gray-500 backdrop-blur-sm focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20  hover:border-gray-600 transition-all duration-300"/>
+                    <input type="text" placeholder="Enter your college" name='college' id='college' autoComplete='off' required className="w-full px-4 py-3 rounded-xl bg-gray-900/70 border border-gray-700/50 text-white placeholder-gray-500 backdrop-blur-sm focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20  hover:border-gray-600 transition-all duration-300"
+                      value={form.college}
+                      onChange={handleChange}
+                    />
                   </div>
 
                   {/* Phone Number */}
@@ -148,14 +172,16 @@ const EventForm = () => {
                       Phone Number *
                     </label>
                     <input type="tel" placeholder="Enter your phone number" name='phone' id='phone' autoComplete='off' required className="w-full px-4 py-3 rounded-xl bg-gray-900/70 border border-gray-700/50 text-white placeholder-gray-500 backdrop-blur-sm focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20  hover:border-gray-600 transition-all duration-300"
+                      value={form.phone}
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
 
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }} 
-                  animate={{ opacity: 1, y: 0 }} 
-                  transition={{ duration: 0.8, delay: 0.4 }} 
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
                   className="relative group mt-10 pt-6 border-t border-gray-700/50"
                 >
                   <button
