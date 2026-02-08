@@ -18,11 +18,14 @@ const EventForm = () => {
       body: JSON.stringify(form)
     })
     const data = await res.json()
-    if(res.ok){
+    if (res.ok) {
+      // Store user ID and name for later use in responses
+      localStorage.setItem('user_id', data.user.id);
+      localStorage.setItem('user_name', data.user.name);
       router.push('/mcq')
     }
-    else{
-      alert(data.message)
+    else {
+      alert(data.error || 'Registration failed')
     }
   }
   return (

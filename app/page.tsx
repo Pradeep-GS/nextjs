@@ -17,12 +17,9 @@ export default function HomePage() {
     <div className='w-full min-h-screen bg-gray-950 overflow-hidden'>
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,0.03)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,black,transparent)]"></div>
-
         <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/5 via-transparent to-blue-900/5"></div>
-
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent animate-pulse"></div>
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent animate-pulse"></div>
-
         <div className="absolute top-1/4 left-10 text-cyan-500/10">
           <Cpu className="w-16 h-16" />
         </div>

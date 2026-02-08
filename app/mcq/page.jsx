@@ -14,7 +14,9 @@ export default function QuestionsPage() {
     const [currentQuestion, setCurrentQuestion] = useState(0)
     const [answers, setAnswers] = useState({})
     const [showResult, setShowResult] = useState(false)
-    const [timeLeft, setTimeLeft] = useState(1800)
+    const [timeLeft, setTimeLeft] = useState(1800) // 30 mins
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [submitStatus, setSubmitStatus] = useState(null)
 
     useEffect(() => {
         const fetchQuestions = async () => {
@@ -56,7 +58,9 @@ export default function QuestionsPage() {
     useEffect(() => {
         if (timeLeft <= 0 || showResult) {
             if (timeLeft <= 0 && !showResult) {
-                setShowResult(true)
+                handleSubmitResults().then(() => {
+                    setShowResult(true)
+                })
             }
             return
         }
@@ -82,11 +86,46 @@ export default function QuestionsPage() {
         }))
     }
 
-    const handleNext = () => {
+    const handleNext = async () => {
         if (currentQuestion < questions.length - 1) {
             setCurrentQuestion(currentQuestion + 1)
         } else {
+            await handleSubmitResults()
             setShowResult(true)
+        }
+    }
+
+    const handleSubmitResults = async () => {
+        setIsSubmitting(true)
+        const calculatedScore = questions.reduce((acc, q) => {
+            return acc + (answers[q.id] === q.correct_option ? 1 : 0)
+        }, 0)
+
+        const userId = localStorage.getItem('user_id')
+        const timeSpent = 1800 - timeLeft
+
+        try {
+            const response = await fetch('/api/submit-results', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: userId,
+                    score: calculatedScore,
+                    time_spent: timeSpent
+                })
+            })
+
+            if (!response.ok) {
+                const data = await response.json()
+                throw new Error(data.error || 'Failed to submit results')
+            }
+
+            setSubmitStatus('success')
+        } catch (err) {
+            console.error('Submission error:', err)
+            setSubmitStatus('failed')
+        } finally {
+            setIsSubmitting(false)
         }
     }
 
@@ -165,6 +204,17 @@ export default function QuestionsPage() {
                                     ? "Excellent work! You've qualified for the next stage."
                                     : "Unfortunately, you didn't reach the required score of 20 to proceed."}
                             </p>
+                            {submitStatus === 'failed' && (
+                                <p className="text-red-400 mt-2 text-sm">
+                                    Warning: Results failed to save to server. Please notify the coordinator.
+                                </p>
+                            )}
+                            {isSubmitting && (
+                                <div className="flex items-center justify-center gap-2 text-cyan-400 mt-2 text-sm">
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                    Saving results...
+                                </div>
+                            )}
                         </div>
 
                         <div className="flex justify-center gap-8 mb-10">
