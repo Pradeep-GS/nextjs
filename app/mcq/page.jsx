@@ -17,6 +17,78 @@ export default function QuestionsPage() {
     const [timeLeft, setTimeLeft] = useState(1800) // 30 mins
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [submitStatus, setSubmitStatus] = useState(null)
+    const [isFullScreen, setIsFullScreen] = useState(false)
+    const [isDisqualified, setIsDisqualified] = useState(false)
+
+    useEffect(() => {
+        // Anti-cheating: Disable Copy/Paste/Right-click
+        const preventDefaults = (e) => {
+            e.preventDefault()
+            alert('Security Alert: This action is disabled.')
+        }
+
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'hidden' && !showResult && !isDisqualified) {
+                handleDisqualification()
+            }
+        }
+
+        const handleWindowBlur = () => {
+            if (!showResult && !isDisqualified) {
+                handleDisqualification()
+            }
+        }
+
+        if (!loading && questions.length > 0 && !showResult) {
+            document.addEventListener('copy', preventDefaults)
+            document.addEventListener('paste', preventDefaults)
+            document.addEventListener('contextmenu', preventDefaults)
+            document.addEventListener('visibilitychange', handleVisibilityChange)
+            window.addEventListener('blur', handleWindowBlur)
+        }
+
+        return () => {
+            document.removeEventListener('copy', preventDefaults)
+            document.removeEventListener('paste', preventDefaults)
+            document.removeEventListener('contextmenu', preventDefaults)
+            document.removeEventListener('visibilitychange', handleVisibilityChange)
+            window.removeEventListener('blur', handleWindowBlur)
+        }
+    }, [loading, questions, showResult, isDisqualified])
+
+    const handleDisqualification = async () => {
+        setIsDisqualified(true)
+        // Optionally submit a 0 score
+        const userId = localStorage.getItem('user_id')
+        await fetch('/api/submit-results', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                user_id: userId,
+                score: 0,
+                time_spent: 1800 - timeLeft
+            })
+        })
+
+        if (document.fullscreenElement) {
+            document.exitFullscreen().catch(() => { })
+        }
+
+        alert('DISQUALIFIED: Tab switching or leaving the window is not allowed.')
+        router.push('/')
+    }
+
+    const enterFullScreen = () => {
+        const elem = document.documentElement
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen()
+        } else if (elem.webkitRequestFullscreen) {
+            elem.webkitRequestFullscreen()
+        } else if (elem.msRequestFullscreen) {
+            elem.msRequestFullscreen()
+        }
+        setIsFullScreen(true)
+    }
 
     useEffect(() => {
         const fetchQuestions = async () => {
@@ -256,10 +328,34 @@ export default function QuestionsPage() {
         )
     }
 
+    if (!isFullScreen && !loading && questions.length > 0) {
+        return (
+            <div className="min-h-screen bg-gray-950 flex items-center justify-center p-4">
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="max-w-md w-full bg-gray-900/50 backdrop-blur-xl border border-cyan-500/30 p-8 rounded-3xl text-center shadow-2xl"
+                >
+                    <Trophy className="w-16 h-16 text-cyan-500 mx-auto mb-6" />
+                    <h2 className="text-2xl font-bold text-white mb-4">Ready to Begin?</h2>
+                    <p className="text-gray-400 mb-8">
+                        The assessment will open in full-screen mode. Switching tabs or leaving the window will result in automatic disqualification.
+                    </p>
+                    <button
+                        onClick={enterFullScreen}
+                        className="w-full py-4 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl font-bold text-lg text-white hover:from-cyan-500 hover:to-blue-500 transition-all shadow-lg shadow-cyan-900/40"
+                    >
+                        Enter Full Screen & Start
+                    </button>
+                </motion.div>
+            </div>
+        )
+    }
+
     const currentQ = questions[currentQuestion]
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-950 to-gray-900 p-4 md:p-6">
+        <div className="min-h-screen bg-gradient-to-br from-gray-950 to-gray-900 p-4 md:p-6 select-none">
             <div className="max-w-4xl mx-auto">
                 {/* Header with Timer */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
