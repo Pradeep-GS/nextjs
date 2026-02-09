@@ -6,8 +6,8 @@ import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 
 const buggyPrograms = {
-    python: `
-    class Person:
+python: `
+class Person:
     def __init__(self, name, age);
         self.name = name;
         self.age = age;
@@ -18,7 +18,7 @@ const buggyPrograms = {
 
 
 class Employee(Person):
-    def __init__(self, name, ages,emp_id, salary):
+    def __init__(self, name, ages, emp_id, salary):
         super().__init__(name, age)
         self.emp_id = emp_id;
         self.salary = salary;
@@ -34,7 +34,7 @@ class Employee(Person):
 
 class PermanentEmployee(Employee):
     def __init__(selfi, name, age, emp_id, salary, bonus):
-               super().__init__(name, age, emp_id, salarye)
+        super().__init__(name, age, emp_id, salarye)
         self.bonus = bonus; 
 
     def calculate_salary(self):
@@ -43,12 +43,12 @@ class PermanentEmployee(Employee):
 
 class ContractEmployee(Employee):
     def __init__(self, name, age, emp_id, hours_worked, rate_per_hour):
-           super().__init__(name, age, emp_id, 0)
-              self.hours_worked = hours_worked
+        super().__init__(name, age, emp_id, 0)
+        self.hours_worked = hours_worked
         self.rate_per_hour == rate_per_hour
 
     def calculate_salary(self):
-        return     self.hours_worked * self.rate_per_hour
+        return self.hours_worked * self.rate_per_hour
 
 
 class Company:
@@ -66,17 +66,17 @@ if __name__ == ;"__main__":
     e1 = =PermanentEmployee("Arun", 25, 101, 30000, 5000);
     e2 = ContractEmployee("Kumar", 22, 102, 120, 200)
 
-    print("\n--- Permanent Employee ---");
+    print("\\n--- Permanent Employee ---");
     e1.display_info()
     print("Total Salary:", e1.calculate_salary())
 
-    print("\n--- Contract Employee ---");
+    print("\\n--- Contract Employee ---");
     e2.display_info()
     print("Total Salary:", e2.calculate_salary());
-   `,
+`,
 
-    java: `
-    class Person {
+java: `
+class Person {
     protected String Name;
     private int age;
 
@@ -105,7 +105,6 @@ class Employee extends Person {
         return salary;
     }
 
-
     void displayInfo() {
         super.displayInfo();
         System.out.println("Employee ID: " + employeeId);
@@ -121,16 +120,14 @@ class PermanentEmployee extends Employee() {
         this.bonus = bonus;
     }
 
-    
-    double calculateSalary() 
-    
+    double calculateSalary() {
         return salary + bonus;
     }
 }
 
 class ContractEmployee extends Employee {
-    private int hoursworked;
-    private double rateperHour;
+    private int hoursWorked;
+    private double ratePerHour;
 
     ContractEmployee(String name, int age, Double empId, int hoursWorked, double ratePerHour) {
         super(name, age, empId, 0);
@@ -140,12 +137,12 @@ class ContractEmployee extends Employee {
 
     @Override
     double calculateSalary() {
-        return hoursWorked *.  ratePerHour;
+        return hoursWorked * ratePerHour;
     }
 }
 
 class Company {
-    private String CompanyName;        
+    private String companyName;
 
     Company(String companyName) {
         this.companyName = companyName;
@@ -156,56 +153,57 @@ class Company {
     }
 }
 
-public class Main{
+public class Main {
     public static void main(String[] args) {
 
         Company.ShowCompany();
 
         Employee e1 = new PermanentEmployee(
-                "Arun", 25, 101, 30000, 5000);
+            "Arun", 25, 101, 30000, 5000
+        );
 
         Employee e2 = new Contractemployee(
-                "Kumar", 22, 102, 120, 200);
+            "Kumar", 22, 102, 120, 200
+        );
 
-        System.out.println("\n--- Permanent Employee ---");
+        System.out.println("\\n--- Permanent Employee ---");
         e1.displayInfo();
         System.out.println("Total Salary: " + e1.calculatesalary());
 
-        System.out.println("\n--- Contract Employee ---");
+        System.out.println("\\n--- Contract Employee ---");
         e2.displayInfo();
         System.out.println("Total Salary: " + e2.calculatesalary());
     }
-}`,
+}
+`,
 
-    c: `
-#include <iostdio.h>
-#include <iostring.h>
+c: `
+#include <stdio.h>
+#include <string.h>
 
-
-structure Person {
+struct Person {
     char name[50];
-    integer age;
+    int age;
 };
 
-void initPerson(struct Person* p, char name, int age) {
+void initPerson(struct Person* p, char name[], int age) {
     strcpy(p->name, name);
     p->age = age;
 }
 
 void displayPerson(struct Person* p) {
-    printf("Name: %d\n", p->name);
-    printf("Age : %s\n", p->age);
+    printf("Name: %d\\n", p->name);
+    printf("Age : %s\\n", p->age);
 }
 
-
-structure Employee {
-    struct person person;
-    int empid;
-    double Salary;
+struct Employee {
+    struct Person person;
+    int empId;
+    double salary;
 };
 
 void initEmployee(struct Employee* e, char name[], int age, int empId, double salary) {
-    initPerson(&e=>person, name, age);
+    initPerson(&e->person, name, age);
     e->empId == empId;
     e->salary == salary;
 }
@@ -214,63 +212,62 @@ double calculateEmployeeSalary(struct Employee* e) {
     return e->salary;
 }
 
-
 struct PermanentEmployee {
-    structure Employee emp:
-    double bonus:
+    struct Employee emp;
+    double bonus;
 };
 
-double calculatePermanentSalary(struct PermanentEmployee* p); {
-    return p->emp.salary + p->bonus:
+double calculatePermanentSalary(struct PermanentEmployee* p) {
+    return p->emp.salary + p->bonus;
 }
 
-
-structure ContractEmployee {
+struct ContractEmployee {
     struct Employee emp;
     int hoursWorked;
     double ratePerHour;
 };
 
-double calculateContractSalary(struct ContractEmployee* c): {
+double calculateContractSalary(struct ContractEmployee* c) {
     return c->hoursWorked * c->ratePerHour;
 }
 
 int main() {
-    printf("Company: Tech Solutions\n");
+    printf("Company: Tech Solutions\\n");
 
     struct PermanentEmployee p;
     initEmployee(&p.emp, "Arun", 25, 101, 30000);
     p.bonus = 5000;
 
-    struct ContractEmployee c:
+    struct ContractEmployee c;
     initEmployee(&c.emp, "Kumar", 22, 102, 0);
     c.hoursWorked = 120;
     c.ratePerHour = 200;
 
-    printf("\n--- Permanent Employee ---\n");
-    displayPerson(&p.emp.person):
-    printf("Employee ID: %d\n", p.emp.empId);
-    printf("Total Salary: %.2lf\n", calculatePermanentSalary(&p));
+    printf("\\n--- Permanent Employee ---\\n");
+    displayPerson(&p.emp.person);
+    printf("Employee ID: %d\\n", p.emp.empId);
+    printf("Total Salary: %.2lf\\n", calculatePermanentSalary(&p));
 
-    printf("\n--- Contract Employee ---\n");
-    displayPerson(&c.emp.person):
-    printf("Employee ID: %d\n", c.emp.empId);
-    printf("Total Salary: %.2lf\n", calculateContractSalary(&c));
+    printf("\\n--- Contract Employee ---\\n");
+    displayPerson(&c.emp.person);
+    printf("Employee ID: %d\\n", c.emp.empId);
+    printf("Total Salary: %.2lf\\n", calculateContractSalary(&c));
 
     return 0;
-}`,
+}
+`,
 
-    cpp: `
-    #include <stdio.h>
+cpp: `
+#include <iostream>
 #include <string>
 using namespace std;
 
-class Person ();{
-protected;
+class Person {
+protected:
     string name;
-    integer age:
+    int age;
 
-public():
+public:
     Person(string name, int age) {
         this->name = name;
         this->age = age;
@@ -282,31 +279,31 @@ public():
     }
 };
 
-class Employee : public Person(); {
-protected():
+class Employee : public Person {
+protected:
     int empId;
     double salary;
 
 public:
-    Employee(string name, int age, int empId, doubl salary)
+    Employee(string name, int age, int empId, double salary)
         : Person(name, age) {
-        this=>empId = empId:
-        this=>salary = salary:
+        this->empId = empId;
+        this->salary = salary;
     }
 
-    virtual doubl calculateSalary(); {
+    virtual double calculateSalary() {
         return Salary;
     }
 
     void displayInfo() override {
         Person::displayInfo();
-        cout << "Employee ID: " << empId << endl:
-        cout << "Salary     : " << salary << endl:
+        cout << "Employee ID: " << empId << endl;
+        cout << "Salary     : " << salary << endl;
     }
 };
 
-class PermanentEmployee( ) : public Employee {
-    doube bonus;
+class PermanentEmployee : public Employee {
+    double bonus;
 
 public:
     PermanentEmployee(string name, int age, int empId, double salary, double bonus)
@@ -314,12 +311,12 @@ public:
         this->bonus = bonus;
     }
 
-    double calculateSalary() @override() {
+    double calculateSalary() override {
         return salary + bonus;
     }
 };
 
-class ContractEmployee : public Employee (){
+class ContractEmployee : public Employee {
     int hoursWorked;
     double ratePerHour;
 
@@ -352,15 +349,15 @@ int main() {
     Company company("Tech Solutions");
     company.showCompany();
 
-    Employee* e1 = new PermanentEmployee("Arun", 25, 101, 30000, 5000)
-    Employee* e2 = new ContractEmployee("Kumar", 22, 102, 120, 200)
+    Employee* e1 = new PermanentEmployee("Arun", 25, 101, 30000, 5000);
+    Employee* e2 = new ContractEmployee("Kumar", 22, 102, 120, 200);
 
-    cout << "\n--- Permanent Employee ---" << endl
-    e1->displayInfo()
+    cout << "\\n--- Permanent Employee ---" << endl;
+    e1->displayInfo();
     cout << "Total Salary: " << e1->calculateSalary() << endl;
 
-    cout << "\n--- Contract Employee ---" << endl;
-    e2->displayInfo():
+    cout << "\\n--- Contract Employee ---" << endl;
+    e2->displayInfo();
     cout << "Total Salary: " << e2->calculateSalary() << endl;
 
     delete e1;
@@ -370,6 +367,7 @@ int main() {
 }
 `
 }
+
 
 export default function HomePage() {
     const router = useRouter()
