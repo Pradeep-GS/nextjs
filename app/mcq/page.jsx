@@ -271,11 +271,27 @@ export default function QuestionsPage() {
                             <h1 className="text-3xl font-bold mb-2 text-white">
                                 {isPassed ? "Qualification Successful!" : "Assessment Incomplete"}
                             </h1>
-                            <p className="text-gray-400">
+                            <p className="text-gray-400 mb-6">
                                 {isPassed
-                                    ? "Excellent work! You've qualified for the next stage."
+                                    ? "Excellent work! You've qualified for the next stage. Please use the credentials below to continue."
                                     : "Unfortunately, you didn't reach the required score of 20 to proceed."}
                             </p>
+
+                            {isPassed && (
+                                <div className="bg-gray-800/80 p-6 rounded-xl border border-cyan-500/30 mb-8 max-w-sm mx-auto">
+                                    <div className="flex flex-col gap-3 text-left">
+                                        <div className="flex justify-between items-center border-b border-gray-700 pb-2">
+                                            <span className="text-gray-400 text-sm uppercase tracking-wider">Name</span>
+                                            <span className="text-cyan-400 font-mono font-bold">kanal</span>
+                                        </div>
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-gray-400 text-sm uppercase tracking-wider">Password</span>
+                                            <span className="text-cyan-400 font-mono font-bold">codefaultarena</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
                             {submitStatus === 'failed' && (
                                 <p className="text-red-400 mt-2 text-sm">
                                     Warning: Results failed to save to server. Please notify the coordinator.
@@ -304,10 +320,10 @@ export default function QuestionsPage() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {isPassed ? (
                                 <button
-                                    onClick={() => router.push('/code')}
+                                    onClick={() => router.push('/final-login')}
                                     className="col-span-1 md:col-span-2 flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 rounded-xl font-bold text-lg text-white transition-all hover:scale-[1.02] shadow-lg shadow-cyan-900/30"
                                 >
-                                    Proceed to Coding Challenge
+                                    Proceed to Coding Login
                                     <ChevronRight className="w-6 h-6" />
                                 </button>
                             ) : (

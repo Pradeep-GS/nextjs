@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 const EventForm = () => {
   const router = useRouter();
-  const [form, setForm] = useState({ name: '', email: '', year: '', department: '', college: '', phone: '' })
+  const [form, setForm] = useState({ name: '', email: '', year: '', department: '', college: '', phone: '', kanal_id: '' })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => setForm({ ...form, [e.target.name]: e.target.value })
 
@@ -182,6 +182,24 @@ const EventForm = () => {
                     </label>
                     <input type="tel" placeholder="Enter your phone number" name='phone' id='phone' autoComplete='off' required className="w-full px-4 py-3 rounded-xl bg-gray-900/70 border border-gray-700/50 text-white placeholder-gray-500 backdrop-blur-sm focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20  hover:border-gray-600 transition-all duration-300"
                       value={form.phone}
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  {/* Kanal ID */}
+                  <div className="group">
+                    <label htmlFor="kanal_id" className="block text-lg font-medium text-cyan-300 mb-2 group-focus-within:text-cyan-200 transition-colors">
+                      Kanal ID *
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Enter your Kanal ID"
+                      name='kanal_id'
+                      id='kanal_id'
+                      autoComplete='off'
+                      required
+                      className="w-full px-4 py-3 rounded-xl bg-gray-900/70 border border-gray-700/50 text-white placeholder-gray-500 backdrop-blur-sm focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20  hover:border-gray-600 transition-all duration-300"
+                      value={form.kanal_id}
                       onChange={handleChange}
                     />
                   </div>
