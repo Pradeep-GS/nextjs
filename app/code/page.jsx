@@ -1,8 +1,9 @@
 'use client'
 import { useEffect, useState } from 'react'
 import MonacoEditor from '@monaco-editor/react'
-import { Clock } from 'lucide-react'
+import { Clock, Trophy } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { motion } from 'framer-motion'
 
 const buggyPrograms = {
     python: `
@@ -121,7 +122,7 @@ export default function HomePage() {
     const router = useRouter()
     const [selectedLang, setSelectedLang] = useState('python')
     const [code, setCode] = useState(buggyPrograms.python)
-    const [timeLeft, setTimeLeft] = useState(30* 60)
+    const [timeLeft, setTimeLeft] = useState(30 * 60)
     const [output, setOutput] = useState('')
     const [isRunning, setIsRunning] = useState(false)
 
@@ -131,6 +132,87 @@ export default function HomePage() {
         { value: 'c', label: 'C' },
         { value: 'cpp', label: 'C++' }
     ]
+
+    const [isFullScreen, setIsFullScreen] = useState(false)
+    const [isDisqualified, setIsDisqualified] = useState(false)
+
+    useEffect(() => {
+        // Anti-cheating: Disable Copy/Paste/Right-click
+        const preventDefaults = (e) => {
+            e.preventDefault()
+            alert('Security Alert: This action is disabled.')
+        }
+
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'hidden' && !isDisqualified) {
+                handleDisqualification()
+            }
+        }
+
+        const handleWindowBlur = () => {
+            if (!isDisqualified) {
+                handleDisqualification()
+            }
+        }
+
+        const handleFullScreenChange = () => {
+            if (!document.fullscreenElement && !isDisqualified && isFullScreen) {
+                handleDisqualification()
+            }
+        }
+
+        if (isFullScreen && !isDisqualified) {
+            document.addEventListener('copy', preventDefaults)
+            document.addEventListener('paste', preventDefaults)
+            document.addEventListener('contextmenu', preventDefaults)
+            document.addEventListener('visibilitychange', handleVisibilityChange)
+            document.addEventListener('fullscreenchange', handleFullScreenChange)
+            window.addEventListener('blur', handleWindowBlur)
+        }
+
+        return () => {
+            document.removeEventListener('copy', preventDefaults)
+            document.removeEventListener('paste', preventDefaults)
+            document.removeEventListener('contextmenu', preventDefaults)
+            document.removeEventListener('visibilitychange', handleVisibilityChange)
+            document.removeEventListener('fullscreenchange', handleFullScreenChange)
+            window.removeEventListener('blur', handleWindowBlur)
+        }
+    }, [isFullScreen, isDisqualified])
+
+    const handleDisqualification = async () => {
+        setIsDisqualified(true)
+        const userId = localStorage.getItem('user_id')
+        if (userId) {
+            await fetch('/api/submit-results', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: userId,
+                    score: 0,
+                    time_spent: 30 * 60 - timeLeft
+                })
+            }).catch(() => { })
+        }
+
+        if (document.fullscreenElement) {
+            document.exitFullscreen().catch(() => { })
+        }
+        alert('DISQUALIFIED: Tab switching or leaving the window is not allowed.')
+        router.push('/')
+    }
+
+    const enterFullScreen = () => {
+        const elem = document.documentElement
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen()
+        } else if (elem.webkitRequestFullscreen) {
+            elem.webkitRequestFullscreen()
+        } else if (elem.msRequestFullscreen) {
+            elem.msRequestFullscreen()
+        }
+        setIsFullScreen(true)
+    }
 
     useEffect(() => {
         if (timeLeft === 0) {
@@ -180,8 +262,32 @@ export default function HomePage() {
     }
 
 
+    if (!isFullScreen) {
+        return (
+            <div className="min-h-screen bg-gray-950 flex items-center justify-center p-4">
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="max-w-md w-full bg-gray-900/50 backdrop-blur-xl border border-cyan-500/30 p-8 rounded-3xl text-center shadow-2xl"
+                >
+                    <Trophy className="w-16 h-16 text-cyan-500 mx-auto mb-6" />
+                    <h2 className="text-2xl font-bold text-white mb-4">Ready to Fix Bugs?</h2>
+                    <p className="text-gray-400 mb-8">
+                        The coding environment will open in full-screen mode. Switching tabs or leaving the window will result in automatic disqualification.
+                    </p>
+                    <button
+                        onClick={enterFullScreen}
+                        className="w-full py-4 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl font-bold text-lg text-white hover:from-cyan-500 hover:to-blue-500 transition-all shadow-lg shadow-cyan-900/40"
+                    >
+                        Enter Full Screen & Start
+                    </button>
+                </motion.div>
+            </div>
+        )
+    }
+
     return (
-        <div className="min-h-screen bg-gray-950 text-white flex flex-col">
+        <div className="min-h-screen bg-gray-950 text-white flex flex-col select-none">
             <div className="flex items-center justify-between px-4 py-3 bg-gray-900 border-b border-gray-800">
                 <select
                     value={selectedLang}
