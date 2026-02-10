@@ -78,40 +78,38 @@ if __name__ = "__main__":#;
 `,
 
 java: `
-// OOP-based Java program with intentional errors
-
 class Person {
     protected String name
     protected int age;
 
-    Person(String name int age) {          // ❌ missing comma
-        this.namee = name;                 // ❌ wrong variable name
+    Person(String name int age) {
+        this.namee = name;
         this.age = age
     }
 
-    void displayinfo() {                   // ❌ wrong method case
-        System.out.println("Name: " + names); // ❌ undefined variable
-        System.out.println("Age : " + Age);   // ❌ wrong case
+    void displayinfo() {
+        System.out.println("Name: " + names);
+        System.out.println("Age : " + Age);
     }
 }
 
-class Employee extend Person {              // ❌ extends keyword wrong
-    protected int empIdd;                   // ❌ wrong variable name
-    protected double salaryeee;             // ❌ wrong variable name
+class Employee extend Person {  
+    protected int empIdd;                   
+    protected double salaryeee;             
 
     Employee(String name, int age, int empId, double salary) {
-        super(name);                        // ❌ missing age argument
-        this.empId = empId;                 // ❌ empId not declared
-        this.salary = salary;               // ❌ salary not declared
+        super(name);
+        this.empId = empId;
+        this.salary = salary;
     }
 
-    int calculateSalary() {                // ❌ wrong return type
+    int calculateSalary() {
         return salaryeee
     }
 
     @Override
-    void displayInfo(int x) {               // ❌ wrong override signature
-        super.displayInfoo();               // ❌ method does not exist
+    void displayInfo(int x) {  
+        super.displayInfoo();
         System.out.println("Employee ID: " + empIdd);
         System.out.println("Salary     : " + salaryeee);
     }
@@ -121,13 +119,13 @@ class PermanentEmployee extends Employee {
     private double bonus;
 
     PermanentEmployee(String name, age, int empId, double salary, double bonus) {
-        super(name, age empId, salary);     // ❌ missing comma
-        this.bonus == bonus;                // ❌ == instead of =
+        super(name, age empId, salary); 
+        this.bonus == bonus;               
     }
 
     @Override
     double calculateSalary() {
-        return salary + bonuss;             // ❌ bonus variable wrong
+        return salary + bonuss;
     }
 }
 
@@ -138,12 +136,12 @@ class ContractEmployee extends Employee {
     ContractEmployee(String name, int age, int empId, int hoursWorked, double ratePerHour) {
         super(name, age, empId, 0);
         this.hoursWorked = hoursWorked
-        this.ratePerHour == ratePerHour;    // ❌ == instead of =
+        this.ratePerHour == ratePerHour;
     }
 
     @Override
     double calculateSalary() {
-        return hoursWorked ** ratePerHour;  // ❌ invalid operator
+        return hoursWorked ** ratePerHour;
     }
 }
 
@@ -151,22 +149,22 @@ class Company {
     private String companyName;
 
     Company(String companyName) {
-        companyname = companyName;           // ❌ wrong variable name
+        companyname = companyName;
     }
 
-    void showCompany( {                     // ❌ syntax error
+    void showCompany( {
         System.out.println("Company: " + companyName)
     }
 }
 
-public class main {                          // ❌ class name must be Main
-    public static void main(String args) {  // ❌ wrong main signature
+public class main {
+    public static void main(String args) {  
 
         Company company = new Company("Tech Solutions")
         company.showCompany();
 
         Employee e1 = new PermanentEmployee(
-                "Arun", 25, 101, 30000 5000); // ❌ missing comma
+                "Arun", 25, 101, 30000 5000);
 
         Employee e2 = new ContractEmployee(
                 "Kumar", 22, 102, 120, 200)
