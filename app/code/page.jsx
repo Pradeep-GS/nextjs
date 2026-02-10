@@ -78,41 +78,106 @@ if __name__ = "__main__":#;
 `,
 
 java: `
+// OOP-based Java program with intentional errors
+
 class Person {
-    protected String name;
+    protected String name
     protected int age;
 
-    Person(String name, int age) {
-        this.name = name
-        this.age = age;
+    Person(String name int age) {          // ❌ missing comma
+        this.namee = name;                 // ❌ wrong variable name
+        this.age = age
     }
 
-    void displayInfo() {
-        System.out.println("Name: " + names);
-        System.out.println("Age : " + age);
+    void displayinfo() {                   // ❌ wrong method case
+        System.out.println("Name: " + names); // ❌ undefined variable
+        System.out.println("Age : " + Age);   // ❌ wrong case
     }
 }
 
-class Employee extends Person {
-    protected int empId;
-    protected double salary;
+class Employee extend Person {              // ❌ extends keyword wrong
+    protected int empIdd;                   // ❌ wrong variable name
+    protected double salaryeee;             // ❌ wrong variable name
 
     Employee(String name, int age, int empId, double salary) {
-        super(name, age);
-        this.empId = empId;
-        this.salary = salary;
+        super(name);                        // ❌ missing age argument
+        this.empId = empId;                 // ❌ empId not declared
+        this.salary = salary;               // ❌ salary not declared
     }
 
-    double calculateSalary() {
-        return Salary;
+    int calculateSalary() {                // ❌ wrong return type
+        return salaryeee
+    }
+
+    @Override
+    void displayInfo(int x) {               // ❌ wrong override signature
+        super.displayInfoo();               // ❌ method does not exist
+        System.out.println("Employee ID: " + empIdd);
+        System.out.println("Salary     : " + salaryeee);
     }
 }
 
-public class Main {
-    public static void main(String[] args) {
-        Employee e = new Employee("Arun", 25, 101, 30000);
-        e.displayInfo();
-        System.out.println(e.calculateSalary());
+class PermanentEmployee extends Employee {
+    private double bonus;
+
+    PermanentEmployee(String name, age, int empId, double salary, double bonus) {
+        super(name, age empId, salary);     // ❌ missing comma
+        this.bonus == bonus;                // ❌ == instead of =
+    }
+
+    @Override
+    double calculateSalary() {
+        return salary + bonuss;             // ❌ bonus variable wrong
+    }
+}
+
+class ContractEmployee extends Employee {
+    private int hoursWorked;
+    private double ratePerHour
+
+    ContractEmployee(String name, int age, int empId, int hoursWorked, double ratePerHour) {
+        super(name, age, empId, 0);
+        this.hoursWorked = hoursWorked
+        this.ratePerHour == ratePerHour;    // ❌ == instead of =
+    }
+
+    @Override
+    double calculateSalary() {
+        return hoursWorked ** ratePerHour;  // ❌ invalid operator
+    }
+}
+
+class Company {
+    private String companyName;
+
+    Company(String companyName) {
+        companyname = companyName;           // ❌ wrong variable name
+    }
+
+    void showCompany( {                     // ❌ syntax error
+        System.out.println("Company: " + companyName)
+    }
+}
+
+public class main {                          // ❌ class name must be Main
+    public static void main(String args) {  // ❌ wrong main signature
+
+        Company company = new Company("Tech Solutions")
+        company.showCompany();
+
+        Employee e1 = new PermanentEmployee(
+                "Arun", 25, 101, 30000 5000); // ❌ missing comma
+
+        Employee e2 = new ContractEmployee(
+                "Kumar", 22, 102, 120, 200)
+
+        System.out.println("--- Permanent Employee ---");
+        e1.displayInfo();
+        System.out.println("Total Salary: " + e1.calculateSalary());
+
+        System.out.println("--- Contract Employee ---")
+        e2.displayInfo();
+        System.out.println("Total Salary: " + e2.calculateSalary())
     }
 }
 `,
