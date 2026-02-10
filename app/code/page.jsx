@@ -180,131 +180,6 @@ public class main {                          // ❌ class name must be Main
         System.out.println("Total Salary: " + e2.calculateSalary())
     }
 }
-`,
-
-c: `
-#include <stdio.h>
-#include <string.h>
-
-/* Person */
-struct Person {
-    char namee[50];                 // ❌ wrong variable name
-    int age
-};
-
-void initPerson(struct Person* p, char name[], int age) {
-    strcpy(p->name, name);          // ❌ name does not exist
-    p->age == age;                  // ❌ == instead of =
-}
-
-void displayPerson(struct Person* p) {
-    printf("Name: %d\n", p->namee); // ❌ wrong format specifier
-    printf("Age : %s\n", p->age);   // ❌ wrong format specifier
-}
-
-/* Employee */
-struct Employee {
-    struct Person persons;          // ❌ wrong struct member name
-    int empIdd;                     // ❌ wrong variable name
-    double salaryyyy;               // ❌ wrong variable name
-};
-
-void initEmployee(struct Employee* e, char name[], int age, int empId, double salary) {
-    initPerson(&e->person, name, age);  // ❌ person does not exist
-    e->empId = empId;                   // ❌ empId not declared
-    e->salary = salary                  // ❌ missing semicolon
-}
-
-double calculateEmployeeSalary(struct Employee* e) {
-    return salaryyyy;               // ❌ undefined variable
-}
-
-/* Permanent Employee */
-struct PermanentEmployee {
-    struct Employee emp;
-    double bonuss;                  // ❌ wrong variable name
-};
-
-double calculatePermanentSalary(struct PermanentEmployee* p) {
-    return p->emp.salary + p->bonus; // ❌ bonus does not exist
-}
-
-/* Contract Employee */
-struct ContractEmployee {
-    struct Employee emp;
-    int hoursWorked
-    double ratePerHour;
-};
-
-double calculateContractSalary(struct ContractEmployee* c) {
-    return c->hoursWorked ** c->ratePerHour; // ❌ invalid operator
-}
-
-int main() {
-    printf("Company: Tech Solutions\n")
-
-    struct PermanentEmployee p;
-    initEmployee(&p.emp, "Arun", 25, 101, 30000);
-    p.bonus == 5000;                // ❌ == instead of =
-
-    struct ContractEmployee c;
-    initEmployee(&c.emp, "Kumar", 22, 102, 0);
-    c.hoursWorked = 120;
-    c.ratePerHour == 200;           // ❌ == instead of =
-
-    printf("\n--- Permanent Employee ---\n");
-    displayPerson(&p.emp.person);  // ❌ person does not exist
-    printf("Employee ID: %s\n", p.emp.empIdd); // ❌ wrong format
-    printf("Total Salary: %.2lf\n", calculatePermanentSalary(p)); // ❌ wrong argument
-
-    printf("\n--- Contract Employee ---\n");
-    displayPerson(&c.emp.persons);
-    printf("Employee ID: %d\n", c.emp.empId);
-    printf("Total Salary: %.2lf\n", calculateContractSalary(&c));
-
-    return
-}
-`,
-
-cpp: `
-#include <iostream>
-using namespace std;
-
-class Person {
-protected:
-    string name;
-    int age;
-
-public:
-    Person(string name, int age) {
-        name = name;
-        age = age;
-    }
-
-    void displayInfo() {
-        cout << "Name: " << name << endl;
-        cout << "Age : " << age << endl;
-    }
-};
-
-class Employee : public Person {
-    int salary;
-
-public:
-    Employee(string name, int age, int salary)
-        : Person(name, age) {}
-
-    int calculateSalary() {
-        return Salary;
-    }
-};
-
-int main() {
-    Employee e("Arun", 25, 30000);
-    e.displayInfo();
-    cout << e.calculateSalary() << endl;
-    return 0;
-}
 `
 };
 
@@ -319,9 +194,7 @@ export default function HomePage() {
 
     const languages = [
         { value: 'python', label: 'Python' },
-        { value: 'java', label: 'Java' },
-        { value: 'c', label: 'C' },
-        { value: 'cpp', label: 'C++' }
+        { value: 'java', label: 'Java' }
     ]
 
     const [isFullScreen, setIsFullScreen] = useState(false)
