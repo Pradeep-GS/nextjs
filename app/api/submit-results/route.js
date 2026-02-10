@@ -37,6 +37,7 @@ export async function POST(req) {
             .insert([
                 {
                     user_id,
+                    kanal_id,
                     score,
                     time_from_frontend: `${time_spent} seconds`, // Postgres interval format
                 },

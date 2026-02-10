@@ -190,6 +190,7 @@ export default function HomePage() {
     const [output, setOutput] = useState('')
     const [isRunning, setIsRunning] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [confirmSubmit, setConfirmSubmit] = useState(false)
 
     const languages = [
         { value: 'python', label: 'Python' },
@@ -329,10 +330,14 @@ export default function HomePage() {
     const handleSubmit = async () => {
         if (isSubmitting) return
 
-        const confirmSubmit = window.confirm("Are you sure you want to submit your code? This action cannot be undone.")
-        if (!confirmSubmit) return
+        if (!confirmSubmit) {
+            setConfirmSubmit(true)
+            setTimeout(() => setConfirmSubmit(false), 5000) // Reset after 5s
+            return
+        }
 
         setIsSubmitting(true)
+        setConfirmSubmit(false)
         const userId = localStorage.getItem('user_id')
         const kanalId = localStorage.getItem('kanal_id')
 
@@ -450,10 +455,12 @@ export default function HomePage() {
                                 disabled={isSubmitting || isRunning}
                                 className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${isSubmitting
                                     ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
-                                    : 'bg-blue-600 hover:bg-blue-500 text-white'
+                                    : confirmSubmit
+                                        ? 'bg-red-600 hover:bg-red-500 text-white'
+                                        : 'bg-blue-600 hover:bg-blue-500 text-white'
                                     }`}
                             >
-                                {isSubmitting ? 'Submitting...' : 'Submit Final'}
+                                {isSubmitting ? 'Submitting...' : confirmSubmit ? 'Confirm Submit?' : 'Submit Final'}
                             </button>
                         </div>
                     </div>
