@@ -186,23 +186,83 @@ c: `
 #include <stdio.h>
 #include <string.h>
 
+/* Person */
 struct Person {
-    char name[50];
-    int age;
+    char namee[50];                 // ❌ wrong variable name
+    int age
 };
 
+void initPerson(struct Person* p, char name[], int age) {
+    strcpy(p->name, name);          // ❌ name does not exist
+    p->age == age;                  // ❌ == instead of =
+}
+
 void displayPerson(struct Person* p) {
-    printf("Name: %d\\n", p->name);
-    printf("Age : %s\\n", p->age);
+    printf("Name: %d\n", p->namee); // ❌ wrong format specifier
+    printf("Age : %s\n", p->age);   // ❌ wrong format specifier
+}
+
+/* Employee */
+struct Employee {
+    struct Person persons;          // ❌ wrong struct member name
+    int empIdd;                     // ❌ wrong variable name
+    double salaryyyy;               // ❌ wrong variable name
+};
+
+void initEmployee(struct Employee* e, char name[], int age, int empId, double salary) {
+    initPerson(&e->person, name, age);  // ❌ person does not exist
+    e->empId = empId;                   // ❌ empId not declared
+    e->salary = salary                  // ❌ missing semicolon
+}
+
+double calculateEmployeeSalary(struct Employee* e) {
+    return salaryyyy;               // ❌ undefined variable
+}
+
+/* Permanent Employee */
+struct PermanentEmployee {
+    struct Employee emp;
+    double bonuss;                  // ❌ wrong variable name
+};
+
+double calculatePermanentSalary(struct PermanentEmployee* p) {
+    return p->emp.salary + p->bonus; // ❌ bonus does not exist
+}
+
+/* Contract Employee */
+struct ContractEmployee {
+    struct Employee emp;
+    int hoursWorked
+    double ratePerHour;
+};
+
+double calculateContractSalary(struct ContractEmployee* c) {
+    return c->hoursWorked ** c->ratePerHour; // ❌ invalid operator
 }
 
 int main() {
-    struct Person p;
-    p.age = 25;
-    strcpy(p.name, "Arun");
+    printf("Company: Tech Solutions\n")
 
-    displayPerson(&p);
-    return 0;
+    struct PermanentEmployee p;
+    initEmployee(&p.emp, "Arun", 25, 101, 30000);
+    p.bonus == 5000;                // ❌ == instead of =
+
+    struct ContractEmployee c;
+    initEmployee(&c.emp, "Kumar", 22, 102, 0);
+    c.hoursWorked = 120;
+    c.ratePerHour == 200;           // ❌ == instead of =
+
+    printf("\n--- Permanent Employee ---\n");
+    displayPerson(&p.emp.person);  // ❌ person does not exist
+    printf("Employee ID: %s\n", p.emp.empIdd); // ❌ wrong format
+    printf("Total Salary: %.2lf\n", calculatePermanentSalary(p)); // ❌ wrong argument
+
+    printf("\n--- Contract Employee ---\n");
+    displayPerson(&c.emp.persons);
+    printf("Employee ID: %d\n", c.emp.empId);
+    printf("Total Salary: %.2lf\n", calculateContractSalary(&c));
+
+    return
 }
 `,
 
