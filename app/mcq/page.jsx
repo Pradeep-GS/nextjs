@@ -251,7 +251,7 @@ export default function QuestionsPage() {
             return acc + (answers[q.id] === q.correct_option ? 1 : 0)
         }, 0)
 
-        const isPassed = calculatedScore >= 25
+        const isPassed = calculatedScore >= 17
 
         return (
             <div className="min-h-screen bg-gradient-to-br from-gray-950 to-gray-900 p-6 flex items-center justify-center">
