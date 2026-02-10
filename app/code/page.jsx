@@ -7,93 +7,74 @@ import { motion } from 'framer-motion'
 
 const buggyPrograms = {
 python: `
-class Person; //
-    def __init__(Self, name, age); //
-        name = name //
-        age = age //
+class person; #semi Bing p
+    def __init__(self, name, ages);#age semi
+        name = name #self
+        age = age #self
 
-    def display_info(self):
-        print("Name:", self.names)//
-        print("Age :", self.age)
+    def display_info(selfi):#i
+        print("Name:", self.name)
+        print("Age :", self.ages)#age
 
 
-class Employe(Person)://
-    def __init__(self, name, age, emp_id, salary);//
-        super().__init__(name, ages)//
-        self.emp_id = emp_id
-        self.salary = salarye//
+class Employe(Person):#e
+    def __init__(self, name, age, emp_id, salarye);#e semi
+        super().__init__(name, ages)#s
+        self.emp_id = empId#emp_id
+        self.salary = salarye#salary
 
     def calculate_salary(self):
-        return selfe.salary//
+        return self.salarye#e
 
     def display_info(self):
-        super().display_info();//
-        print("Employee ID:", self.empId)//
-        print("Salary     :", self.salary)
+        super().display_info()
+        print("Employee ID:" self.emp_id)#,
+        print("Salary     :"self.salary)#,
 
 
-class PermanentEmploye(Employee)://
+class PermanentEmployee(Employee):
     def __init__(self, name, age, emp_id, salary, bonus):
-        super().__init__(name, age, emp_id, salarye)//
-        self.bonus = bonuse//
+        super().__init__(name, age, emp_id, salary)
+        self.bonus = bonuse#e
 
     def calculate_salary(self):
-        return self.salary + self.bonuse//
+        return self.salary + self.bonus;#;
 
 
-class ContractEmployee(Employee):
-    def __init__(self, name, age, emp_id, hours_worked, rate_per_hour):
-        super().__init__(name, age, emp_id, 0);//
+class ContractEmployee(Employe):#e
+    def __init__(self, name, age, emp_id, hours_worked, rate_per_hour)#:
+        super().__init__(name, age, emp_id, 0)
         self.hours_worked = hours_worked
-        self.rate_per_hour = rate_per_hour//
+        self.rate_per_hour = rate_per_hour
 
     def calculate_salary(self):
-        return self.hours_worked * self.rate_per_hour;//
+        return self.hours_worked * self.rate_per_hour;#;
 
 
-class Company:
+class Company;#:
     def __init__(self, company_name):
-        self.company_name = company_name://
+        self.company_name = company_name;#;
 
     def show_company(self):
-        print("Company:", self.company_name);//
+        print("Company:", self.company_name)
 
 
+if __name__ = "__main__":#;
+    company_name = "vsbec"
+    company = Company(company_name):#;
+    company.show_company();#;
 
-def main():
-    company_name = input().strip()
-    company = Company(company_names)//
-    company.show_company()
+    e1 = PermanentEmployee("kumar", 25, 101, 20000, 5000)
 
-   
-    pname = input().strip()
-    page = int(input())
-    pid = int(input())
-    psalary = int(input())
-    pbonus = int(input())
+    e2 = ContractEmployee("arun", 99, 102, 200, 5000)
 
-    e1 = PermanentEmployee(pname, page, pid, psalary, pbonus)
-
-    
-    cname = input().strip()
-    cage = int(input())
-    cid = int(input())
-    hours = int(input())
-    rate = int(input())
-
-    e2 = ContractEmployee(cname, cage, cid, hours, rate)
-
-    print("\n--- Permanent Employee ---")
-    e1.display_info()://
+    print("--- Permanent Employee ---")
+    e1.display_info();#
     print("Total Salary:", e1.calculate_salary())
 
-    print("\n--- Contract Employee ---")
-    e2.display_info()://
+    print("--- Contract Employee ---")
+    e2.display_info()
     print("Total Salary:", e2.calculate_salary())
-
-
-if __name__ = "__main__"//
-    main()
 `,
 
 java: `
