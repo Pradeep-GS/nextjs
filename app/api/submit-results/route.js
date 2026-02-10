@@ -3,11 +3,29 @@ import { supabaseServer } from "@/lib/supabase-server";
 
 export async function POST(req) {
     try {
-        const { user_id, score, time_spent } = await req.json();
+        const { user_id, kanal_id, score, time_spent } = await req.json();
 
         if (!user_id || score === undefined || !time_spent) {
             return new Response(
                 JSON.stringify({ error: "Missing required fields: user_id, score, or time_spent" }),
+                { status: 400 }
+            );
+        }
+
+        // Check if user has already submitted mcq
+        const { data: existingResponse, error: checkError } = await supabaseServer
+            .from("user_responses")
+            .select("id")
+            .eq("user_id", user_id)
+            .maybeSingle();
+
+        if (checkError) {
+            console.error("Check error:", checkError);
+        }
+
+        if (existingResponse) {
+            return new Response(
+                JSON.stringify({ error: "MCQ results already submitted" }),
                 { status: 400 }
             );
         }

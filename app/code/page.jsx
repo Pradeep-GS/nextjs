@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 
 const buggyPrograms = {
-python: `
+    python: `
 class person; #semi Bing p
     def __init__(self, name, ages);#age semi
         name = name #self
@@ -77,7 +77,7 @@ if __name__ = "__main__":#;
     print("Total Salary:", e2.calculate_salary())
 `,
 
-java: `
+    java: `
 class Person {
     protected String name
     protected int age;
@@ -189,6 +189,7 @@ export default function HomePage() {
     const [timeLeft, setTimeLeft] = useState(30 * 60)
     const [output, setOutput] = useState('')
     const [isRunning, setIsRunning] = useState(false)
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
     const languages = [
         { value: 'python', label: 'Python' },
@@ -245,12 +246,14 @@ export default function HomePage() {
     const handleDisqualification = async () => {
         setIsDisqualified(true)
         const userId = localStorage.getItem('user_id')
+        const kanalId = localStorage.getItem('kanal_id')
         if (userId) {
             await fetch('/api/submit-results', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     user_id: userId,
+                    kanal_id: kanalId,
                     score: 0,
                     time_spent: 30 * 60 - timeLeft
                 })
@@ -323,6 +326,47 @@ export default function HomePage() {
         }
     }
 
+    const handleSubmit = async () => {
+        if (isSubmitting) return
+
+        const confirmSubmit = window.confirm("Are you sure you want to submit your code? This action cannot be undone.")
+        if (!confirmSubmit) return
+
+        setIsSubmitting(true)
+        const userId = localStorage.getItem('user_id')
+        const kanalId = localStorage.getItem('kanal_id')
+
+        try {
+            const timeTaken = `${30 * 60 - timeLeft} seconds`
+            const res = await fetch('/api/submit-final', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: userId,
+                    kanal_id: kanalId,
+                    time_taken: timeTaken,
+                    language: selectedLang
+                })
+            })
+
+            const data = await res.json()
+            if (data.success) {
+                alert('Congratulations! Your code has been submitted successfully.')
+                if (document.fullscreenElement) {
+                    await document.exitFullscreen().catch(() => { })
+                }
+                router.push('/')
+            } else {
+                alert('Submission failed: ' + (data.error || 'Unknown error'))
+            }
+        } catch (err) {
+            console.error('Submission error:', err)
+            alert('An error occurred during submission.')
+        } finally {
+            setIsSubmitting(false)
+        }
+    }
+
 
     if (!isFullScreen) {
         return (
@@ -390,16 +434,28 @@ export default function HomePage() {
                 <div className="p-4 bg-gray-900 flex flex-col">
                     <div className="flex items-center justify-between mb-3 relative z-20">
                         <h2 className="text-sm text-gray-400">Output</h2>
-                        <button
-                            onClick={handleRun}
-                            disabled={isRunning}
-                            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${isRunning
-                                ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
-                                : 'bg-green-600 hover:bg-green-500 text-white'
-                                }`}
-                        >
-                            {isRunning ? 'Running...' : 'Run Code'}
-                        </button>
+                        <div className="flex gap-2">
+                            <button
+                                onClick={handleRun}
+                                disabled={isRunning || isSubmitting}
+                                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${isRunning
+                                    ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
+                                    : 'bg-green-600 hover:bg-green-500 text-white'
+                                    }`}
+                            >
+                                {isRunning ? 'Running...' : 'Run Code'}
+                            </button>
+                            <button
+                                onClick={handleSubmit}
+                                disabled={isSubmitting || isRunning}
+                                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${isSubmitting
+                                    ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
+                                    : 'bg-blue-600 hover:bg-blue-500 text-white'
+                                    }`}
+                            >
+                                {isSubmitting ? 'Submitting...' : 'Submit Final'}
+                            </button>
+                        </div>
                     </div>
 
                     <div className="bg-black rounded-md p-3 text-sm flex-1">

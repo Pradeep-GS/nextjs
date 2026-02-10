@@ -60,11 +60,13 @@ export default function QuestionsPage() {
         setIsDisqualified(true)
         // Optionally submit a 0 score
         const userId = localStorage.getItem('user_id')
+        const kanalId = localStorage.getItem('kanal_id')
         await fetch('/api/submit-results', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 user_id: userId,
+                kanal_id: kanalId,
                 score: 0,
                 time_spent: 1800 - timeLeft
             })
@@ -174,6 +176,7 @@ export default function QuestionsPage() {
         }, 0)
 
         const userId = localStorage.getItem('user_id')
+        const kanalId = localStorage.getItem('kanal_id')
         const timeSpent = 1800 - timeLeft
 
         try {
@@ -182,6 +185,7 @@ export default function QuestionsPage() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     user_id: userId,
+                    kanal_id: kanalId,
                     score: calculatedScore,
                     time_spent: timeSpent
                 })
@@ -247,7 +251,7 @@ export default function QuestionsPage() {
             return acc + (answers[q.id] === q.correct_option ? 1 : 0)
         }, 0)
 
-        const isPassed = calculatedScore >= 20
+        const isPassed = calculatedScore >= 25
 
         return (
             <div className="min-h-screen bg-gradient-to-br from-gray-950 to-gray-900 p-6 flex items-center justify-center">
@@ -274,7 +278,7 @@ export default function QuestionsPage() {
                             <p className="text-gray-400 mb-6">
                                 {isPassed
                                     ? "Excellent work! You've qualified for the next stage. Please use the credentials below to continue."
-                                    : "Unfortunately, you didn't reach the required score of 20 to proceed."}
+                                    : "Unfortunately, you didn't reach the required score of 25 to proceed."}
                             </p>
 
                             {isPassed && (
@@ -312,7 +316,7 @@ export default function QuestionsPage() {
                             </div>
                             <div className="w-px bg-gray-800 self-stretch"></div>
                             <div className="text-center">
-                                <div className="text-5xl font-bold text-gray-500 mb-1">20</div>
+                                <div className="text-5xl font-bold text-gray-500 mb-1">25</div>
                                 <div className="text-gray-500 uppercase text-xs tracking-widest">Passing Score</div>
                             </div>
                         </div>

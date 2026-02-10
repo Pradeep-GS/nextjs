@@ -19,9 +19,10 @@ const EventForm = () => {
     })
     const data = await res.json()
     if (res.ok) {
-      // Store user ID and name for later use in responses
+      // Store user ID, name and kanal_id for later use in responses
       localStorage.setItem('user_id', data.user.id);
       localStorage.setItem('user_name', data.user.name);
+      localStorage.setItem('kanal_id', data.user.kanal_id);
       router.push('/mcq')
     }
     else {
