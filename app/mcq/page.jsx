@@ -413,7 +413,7 @@ export default function QuestionsPage() {
                     exit={{ opacity: 0, x: -20 }}
                     className="bg-gray-900/50 backdrop-blur-sm rounded-xl border border-gray-700/50 p-6 md:p-8 mb-8"
                 >
-                    <pre className="text-xl md:text-2xl font-medium text-gray-100 mb-8 leading-relaxed">
+                    <pre className="text-xl md:text-2xl font-medium text-gray-100 mb-8 leading-relaxed whitespace-pre-line">
                         {currentQ.question_text}
                     </pre>
 
