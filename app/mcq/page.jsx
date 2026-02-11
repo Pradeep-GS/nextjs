@@ -413,9 +413,9 @@ export default function QuestionsPage() {
                     exit={{ opacity: 0, x: -20 }}
                     className="bg-gray-900/50 backdrop-blur-sm rounded-xl border border-gray-700/50 p-6 md:p-8 mb-8"
                 >
-                    <h2 className="text-xl md:text-2xl font-medium text-gray-100 mb-8 leading-relaxed">
+                    <pre className="text-xl md:text-2xl font-medium text-gray-100 mb-8 leading-relaxed">
                         {currentQ.question_text}
-                    </h2>
+                    </pre>
 
                     {/* Options */}
                     <div className="space-y-4 text-white">
