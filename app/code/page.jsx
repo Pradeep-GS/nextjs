@@ -319,7 +319,12 @@ export default function HomePage() {
             if (data.stderr) {
                 setOutput(data.stderr)
                 setIsErrorOutput(true)
-            } else {
+            }
+            else if (data.build_stderr) {
+                setOutput(data.build_stderr)
+                setIsErrorOutput(true)
+            }
+            else {
                 setOutput(data.stdout)
                 setIsErrorOutput(false)
             }
