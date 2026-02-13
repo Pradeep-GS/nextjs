@@ -2,9 +2,9 @@ import { supabaseServer } from "@/lib/supabase-server";
 
 export async function POST(req) {
     try {
-        const { user_id, kanal_id, time_taken, language } = await req.json();
+        const { user_id, time_taken, language, output_status, code_output } = await req.json();
 
-        if (!user_id || !time_taken || !language) {
+        if (!user_id || !time_taken || !language || !output_status) {
             return new Response(
                 JSON.stringify({ error: "Missing required fields" }),
                 { status: 400 }
@@ -50,6 +50,8 @@ export async function POST(req) {
                     kanal_id: userData.kanal_id,
                     time_taken,
                     language,
+                    output_status,
+                    code_output,
                 },
             ])
             .select()

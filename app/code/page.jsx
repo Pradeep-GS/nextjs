@@ -188,6 +188,7 @@ export default function HomePage() {
     const [code, setCode] = useState(buggyPrograms.python)
     const [timeLeft, setTimeLeft] = useState(30 * 60)
     const [output, setOutput] = useState('')
+    const [isErrorOutput, setIsErrorOutput] = useState(false)
     const [isRunning, setIsRunning] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [confirmSubmit, setConfirmSubmit] = useState(false)
@@ -317,8 +318,10 @@ export default function HomePage() {
 
             if (data.stderr) {
                 setOutput(data.stderr)
+                setIsErrorOutput(true)
             } else {
                 setOutput(data.stdout)
+                setIsErrorOutput(false)
             }
         } catch (err) {
             setOutput('Execution failed')
@@ -350,7 +353,9 @@ export default function HomePage() {
                     user_id: userId,
                     kanal_id: kanalId,
                     time_taken: timeTaken,
-                    language: selectedLang
+                    language: selectedLang,
+                    output_status: isErrorOutput ? 'ERROR' : 'SUCCESS',
+                    code_output: output
                 })
             })
 
