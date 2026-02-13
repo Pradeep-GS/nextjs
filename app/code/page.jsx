@@ -300,36 +300,45 @@ export default function HomePage() {
         setOutput('')
     }
     const handleRun = async () => {
-        if (isRunning) return
-        setIsRunning(true)
-        setOutput('Running...')
+    if (isRunning) return
+    setIsRunning(true)
+    setOutput('Running...')
 
-        try {
-            const res = await fetch('/api/run', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    language: selectedLang,
-                    code
-                })
+    try {
+        const res = await fetch('/api/run', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                language: selectedLang,
+                code
             })
+        })
 
-            const data = await res.json()
+        const data = await res.json()
 
-            if (data.build_stderr || data.stderr) {
-                setOutput(data.build_stderr || data.stderr)
-                setIsErrorOutput(true)
-            }
-            else {
-                setOutput(data.stdout)
-                setIsErrorOutput(false)
-            }
-        } catch (err) {
-            setOutput('Execution failed')
-        } finally {
-            setIsRunning(false)
+        // 🔥 Java compilation error
+        if (data.build_stderr) {
+            setOutput(data.build_stderr)
+            setIsErrorOutput(true)
+
+        // 🔥 Runtime error (Java + Python)
+        } else if (data.stderr) {
+            setOutput(data.stderr)
+            setIsErrorOutput(true)
+
+        // ✅ Success
+        } else {
+            setOutput(data.stdout)
+            setIsErrorOutput(false)
         }
+
+    } catch (err) {
+        setOutput('Execution failed')
+        setIsErrorOutput(true)
+    } finally {
+        setIsRunning(false)
     }
+}
 
     const handleSubmit = async () => {
         if (isSubmitting) return
