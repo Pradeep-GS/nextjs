@@ -7,69 +7,69 @@ import { motion } from 'framer-motion'
 
 const buggyPrograms = {
     python: `
-class person; #semi Bing p
-    def __init__(self, name, ages);#age semi
-        name = name #self
-        age = age #self
+class person;
+    def __init__(self, name, ages);
+        name = name
+        age = age 
 
-    def display_info(selfi):#i
+    def display_info(selfi):
         print("Name:", self.name)
-        print("Age :", self.ages)#age
+        print("Age :", self.ages)
 
 
-class Employe(Person):#e
-    def __init__(self, name, age, emp_id, salarye);#e semi
-        super().__init__(name, ages)#s
+class Employe(Person):
+    def __init__(self, name, age, emp_id, salarye);
+        super().__init__(name, ages)
         self.emp_id = empId#emp_id
         self.salary = salarye#salary
 
     def calculate_salary(self):
-        return self.salarye#e
+        return self.salarye
 
     def display_info(self):
         super().display_info()
-        print("Employee ID:" self.emp_id)#,
-        print("Salary     :"self.salary)#,
+        print("Employee ID:" self.emp_id)
+        print("Salary     :"self.salary)
 
 
 class PermanentEmployee(Employee):
     def __init__(self, name, age, emp_id, salary, bonus):
         super().__init__(name, age, emp_id, salary)
-        self.bonus = bonuse#e
+        self.bonus = bonuse
 
     def calculate_salary(self):
-        return self.salary + self.bonus;#;
+        return self.salary + self.bonus;
 
 
-class ContractEmployee(Employe):#e
-    def __init__(self, name, age, emp_id, hours_worked, rate_per_hour)#:
+class ContractEmployee(Employe):
+    def __init__(self, name, age, emp_id, hours_worked, rate_per_hour)
         super().__init__(name, age, emp_id, 0)
         self.hours_worked = hours_worked
         self.rate_per_hour = rate_per_hour
 
     def calculate_salary(self):
-        return self.hours_worked * self.rate_per_hour;#;
+        return self.hours_worked * self.rate_per_hour;
 
 
-class Company;#:
+class Company;
     def __init__(self, company_name):
-        self.company_name = company_name;#;
+        self.company_name = company_name;
 
     def show_company(self):
         print("Company:", self.company_name)
 
 
-if __name__ = "__main__":#;
+if __name__ = "__main__":
     company_name = "vsbec"
-    company = Company(company_name):#;
-    company.show_company();#;
+    company = Company(company_name):
+    company.show_company();
 
     e1 = PermanentEmployee("kumar", 25, 101, 20000, 5000)
 
     e2 = ContractEmployee("arun", 99, 102, 200, 5000)
 
     print("--- Permanent Employee ---")
-    e1.display_info();#
+    e1.display_info();
     print("Total Salary:", e1.calculate_salary())
 
     print("--- Contract Employee ---")
@@ -316,9 +316,9 @@ export default function HomePage() {
             const data = await res.json()
 
             if (data.stderr) {
-                setOutput("No Error Fixed")
+                setOutput(data.stderr)
             } else {
-                setOutput(data.stdout || 'No output')
+                setOutput(data.stdout)
             }
         } catch (err) {
             setOutput('Execution failed')
