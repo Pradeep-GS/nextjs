@@ -38,6 +38,7 @@ export async function POST(req) {
     return NextResponse.json({
         stdout: result.stdout,
         stderr: result.stderr,
+        build_stderr: result.build_stderr,
         time: result.time,
         memory: result.memory
     })

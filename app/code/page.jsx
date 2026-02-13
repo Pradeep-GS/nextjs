@@ -316,10 +316,10 @@ export default function HomePage() {
 
         const data = await res.json()
         if (data.build_stderr) {
-            setOutput(data.build_stderr|| "Error Not Fixed")
+            setOutput(data.build_stderr)
             setIsErrorOutput(true)
         } else if (data.stderr) {
-            setOutput(data.stderr || "Error Not Fixed")
+            setOutput(data.stderr)
             setIsErrorOutput(true)
         } else {
             setOutput(data.stdout)
