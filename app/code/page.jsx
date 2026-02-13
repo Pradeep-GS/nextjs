@@ -316,12 +316,8 @@ export default function HomePage() {
 
             const data = await res.json()
 
-            if (data.stderr) {
-                setOutput(data.stderr)
-                setIsErrorOutput(true)
-            }
-            else if (data.build_stderr) {
-                setOutput(data.build_stderr)
+            if (data.build_stderr || data.stderr) {
+                setOutput(data.build_stderr || data.stderr)
                 setIsErrorOutput(true)
             }
             else {
