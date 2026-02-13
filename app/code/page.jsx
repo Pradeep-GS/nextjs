@@ -355,7 +355,8 @@ export default function HomePage() {
                     time_taken: timeTaken,
                     language: selectedLang,
                     output_status: isErrorOutput ? 'ERROR' : 'SUCCESS',
-                    code_output: output
+                    code_output: output,
+                    code_text: code
                 })
             })
 
