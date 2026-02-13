@@ -20,8 +20,8 @@ class person;
 class Employe(Person):
     def __init__(self, name, age, emp_id, salarye);
         super().__init__(name, ages)
-        self.emp_id = empId#emp_id
-        self.salary = salarye#salary
+        self.emp_id = empId
+        self.salary = salarye
 
     def calculate_salary(self):
         return self.salarye
