@@ -3,13 +3,16 @@
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { ArrowRight, Cpu, Cctv, CircuitBoard } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function HomePage() {
   const router = useRouter();
 
-   
-  const handleStart = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleStart = async () => {
+    setIsLoading(true);
+    await new Promise(resolve => setTimeout(resolve, 500));
     router.push('/login');
   }
 
@@ -51,7 +54,7 @@ export default function HomePage() {
           <div className="text-center flex-1 mx-4">
             <h1 className="text-3xl md:text-4xl font-bold mb-2">
               <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
-                VSB ENGINEERING COLLEGE 
+                VSB ENGINEERING COLLEGE
               </span>
             </h1>
             <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-gradient-to-r from-cyan-900/30 to-blue-900/30 border border-cyan-700/40 backdrop-blur-sm">
@@ -63,16 +66,16 @@ export default function HomePage() {
 
           {/* Right - Image */}
           <div className="relative rounded-xl overflow-hidden w-32 h-32 md:w-40 md:h-40">
-            <img src="/Kanal-Photoroom.png" alt="AI Pattern" className="w-full h-full object-cover"/>
+            <img src="/Kanal-Photoroom.png" alt="AI Pattern" className="w-full h-full object-cover" />
           </div>
         </nav>
       </header>
 
       <main className="relative z-10 flex flex-col items-center justify-center flex-1 py-8">
-        <motion.div 
-          initial={{ opacity: 0, y: -20 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          transition={{ duration: 0.8 }} 
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
           className="text-center mb-8"
         >
           <div className="inline-flex items-center gap-3 px-6 py-3 rounded-xl bg-gradient-to-r from-gray-900/80 to-gray-800/80 border border-gray-700/50 backdrop-blur-lg shadow-2xl shadow-cyan-900/20">
@@ -84,10 +87,10 @@ export default function HomePage() {
           </div>
         </motion.div>
 
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }} 
-          animate={{ opacity: 1, scale: 1 }} 
-          transition={{ duration: 0.8, delay: 0.2 }} 
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
           className="w-full max-w-3xl mb-8 px-4"
         >
           <div className="relative group flex items-center justify-center">
@@ -101,19 +104,22 @@ export default function HomePage() {
           </div>
         </motion.div>
 
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          transition={{ duration: 0.8, delay: 0.4 }} 
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
           className="relative group"
         >
           <button
             onClick={handleStart}
-            className="relative px-16 py-5 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold text-xl hover:from-cyan-500 hover:to-blue-500 transition-all transform hover:scale-105 active:scale-95 overflow-hidden shadow-2xl shadow-cyan-500/20"
+            disabled={isLoading}
+            className={`relative px-16 py-5 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold text-xl transition-all overflow-hidden shadow-2xl shadow-cyan-500/20 ${isLoading ? 'opacity-70 cursor-not-allowed' : 'hover:from-cyan-500 hover:to-blue-500 hover:scale-105 active:scale-95'}`}
           >
             <div className="relative z-20 flex items-center justify-center gap-4">
-              <span className="drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] tracking-wider">START EXPERIENCE</span>
-              <ArrowRight className="w-6 h-6 group-hover:translate-x-3 transition-transform drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]" />
+              <span className="drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] tracking-wider">
+                {isLoading ? 'LOADING...' : 'START EXPERIENCE'}
+              </span>
+              {!isLoading && <ArrowRight className="w-6 h-6 group-hover:translate-x-3 transition-transform drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]" />}
             </div>
 
             <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 opacity-0 group-hover:opacity-30 blur-xl transition-opacity -z-10"></div>

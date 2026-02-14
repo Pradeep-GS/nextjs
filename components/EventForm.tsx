@@ -8,25 +8,34 @@ const EventForm = () => {
   const router = useRouter();
   const [form, setForm] = useState({ name: '', email: '', year: '', department: '', college: '', phone: '', kanal_id: '' })
 
+  const [isLoading, setIsLoading] = useState(false)
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => setForm({ ...form, [e.target.name]: e.target.value })
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const res = await fetch('/api/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form)
-    })
-    const data = await res.json()
-    if (res.ok) {
-      // Store user ID, name and kanal_id for later use in responses
-      localStorage.setItem('user_id', data.user.id);
-      localStorage.setItem('user_name', data.user.name);
-      localStorage.setItem('kanal_id', data.user.kanal_id);
-      router.push('/mcq')
-    }
-    else {
-      alert(data.error || 'Registration failed')
+    setIsLoading(true)
+    try {
+      const res = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form)
+      })
+      const data = await res.json()
+      if (res.ok) {
+        // Store user ID, name and kanal_id for later use in responses
+        localStorage.setItem('user_id', data.user.id);
+        localStorage.setItem('user_name', data.user.name);
+        localStorage.setItem('kanal_id', data.user.kanal_id);
+        router.push('/mcq')
+      }
+      else {
+        alert(data.error || 'Registration failed')
+      }
+    } catch (error) {
+      alert('An error occurred. Please try again.')
+    } finally {
+      setIsLoading(false)
     }
   }
   return (
@@ -214,11 +223,12 @@ const EventForm = () => {
                 >
                   <button
                     type="submit"
-                    className="relative px-16 py-5 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold text-xl hover:from-cyan-500 hover:to-blue-500 transition-all overflow-hidden shadow-2xl shadow-cyan-500/20 w-full max-w-md mx-auto block"
+                    disabled={isLoading}
+                    className={`relative px-16 py-5 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold text-xl transition-all overflow-hidden shadow-2xl shadow-cyan-500/20 w-full max-w-md mx-auto block ${isLoading ? 'opacity-70 cursor-not-allowed' : 'hover:from-cyan-500 hover:to-blue-500 hover:scale-105 active:scale-95'}`}
                   >
                     <div className="relative z-20 flex items-center justify-center gap-4">
-                      <span>START EXPERIENCE</span>
-                      <ArrowRight className="w-6 h-6 group-hover:translate-x-3 transition-transform drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]" />
+                      <span>{isLoading ? 'PREPARING EXPERIENCE...' : 'START EXPERIENCE'}</span>
+                      {!isLoading && <ArrowRight className="w-6 h-6 group-hover:translate-x-3 transition-transform drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]" />}
                     </div>
 
                     <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 opacity-0 group-hover:opacity-30 blur-xl transition-opacity -z-10"></div>

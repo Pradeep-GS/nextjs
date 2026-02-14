@@ -80,16 +80,24 @@ export default function QuestionsPage() {
         router.push('/')
     }
 
-    const enterFullScreen = () => {
+    const [isEntering, setIsEntering] = useState(false)
+    const enterFullScreen = async () => {
+        setIsEntering(true)
         const elem = document.documentElement
-        if (elem.requestFullscreen) {
-            elem.requestFullscreen()
-        } else if (elem.webkitRequestFullscreen) {
-            elem.webkitRequestFullscreen()
-        } else if (elem.msRequestFullscreen) {
-            elem.msRequestFullscreen()
+        try {
+            if (elem.requestFullscreen) {
+                await elem.requestFullscreen()
+            } else if (elem.webkitRequestFullscreen) {
+                await elem.webkitRequestFullscreen()
+            } else if (elem.msRequestFullscreen) {
+                await elem.msRequestFullscreen()
+            }
+            setIsFullScreen(true)
+        } catch (err) {
+            console.error('Failed to enter full screen:', err)
+        } finally {
+            setIsEntering(false)
         }
-        setIsFullScreen(true)
     }
 
     useEffect(() => {
@@ -363,9 +371,10 @@ export default function QuestionsPage() {
                     </p>
                     <button
                         onClick={enterFullScreen}
-                        className="w-full py-4 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl font-bold text-lg text-white hover:from-cyan-500 hover:to-blue-500 transition-all shadow-lg shadow-cyan-900/40"
+                        disabled={isEntering}
+                        className={`w-full py-4 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl font-bold text-lg text-white transition-all shadow-lg shadow-cyan-900/40 ${isEntering ? 'opacity-70 cursor-not-allowed' : 'hover:from-cyan-500 hover:to-blue-500 hover:scale-105 active:scale-95'}`}
                     >
-                        Enter Full Screen & Start
+                        {isEntering ? 'STARTING...' : 'Enter Full Screen & Start'}
                     </button>
                 </motion.div>
             </div>
@@ -456,13 +465,13 @@ export default function QuestionsPage() {
 
                     <button
                         onClick={handleNext}
-                        disabled={!answers[currentQ.id]}
-                        className={`px-8 py-3 rounded-lg font-semibold text-lg transition-all ${!answers[currentQ.id]
+                        disabled={!answers[currentQ.id] || isSubmitting}
+                        className={`px-8 py-3 rounded-lg font-semibold text-lg transition-all ${(!answers[currentQ.id] || isSubmitting)
                             ? 'bg-gray-800/30 text-gray-500 cursor-not-allowed'
                             : 'bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 hover:scale-105 active:scale-95 shadow-lg shadow-cyan-900/30'
                             }`}
                     >
-                        {currentQuestion === questions.length - 1 ? 'Finish' : 'Next'}
+                        {isSubmitting ? 'SUBMITTING...' : (currentQuestion === questions.length - 1 ? 'Finish' : 'Next')}
                     </button>
                 </div>
 

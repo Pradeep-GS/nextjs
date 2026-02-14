@@ -9,14 +9,20 @@ export default function FinalLoginPage() {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
+        setIsLoading(true);
+        // Add a small delay for better UX since it's client-side validation
+        await new Promise(resolve => setTimeout(resolve, 800));
+
         if (name === 'kanal' && password === 'codefaultarena') {
             router.push('/code');
         } else {
             setError('Invalid credentials. Please try again.');
+            setIsLoading(false);
         }
     };
 
@@ -92,10 +98,12 @@ export default function FinalLoginPage() {
 
                         <button
                             type="submit"
-                            className="w-full relative group overflow-hidden py-4 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold text-lg hover:from-cyan-500 hover:to-blue-500 transition-all shadow-lg shadow-cyan-900/20"
+                            disabled={isLoading}
+                            className={`w-full relative group overflow-hidden py-4 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold text-lg shadow-lg shadow-cyan-900/20 transition-all ${isLoading ? 'opacity-70 cursor-not-allowed' : 'hover:from-cyan-500 hover:to-blue-500 hover:scale-105 active:scale-95'}`}
                         >
                             <span className="relative z-10 flex items-center justify-center gap-2">
-                                UNLOCK ACCESS <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                {isLoading ? 'VALIDATING...' : 'UNLOCK ACCESS'}
+                                {!isLoading && <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />}
                             </span>
                             <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         </button>
